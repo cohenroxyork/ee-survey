@@ -1,1 +1,1184 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environmental Education Framework — Community Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --acc-dark: #2D5016;
+    --acc-mid: #4A7C2F;
+    --acc-light: #A8C880;
+    --acc-pale: #D4E8C2;
+    --bg: #FAFAF7;
+    --surface: #FFFFFF;
+    --border: rgba(0,0,0,0.1);
+    --border-mid: rgba(0,0,0,0.18);
+    --text: #1A1A16;
+    --text-mid: #4A4A42;
+    --text-muted: #8A8A7E;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .page-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+  }
+
+  /* Header */
+  .site-header {
+    padding: 1.5rem 0 2rem;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .site-header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .site-logo {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    color: var(--text-mid);
+    font-style: italic;
+  }
+  .site-lang {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 2.5rem; }
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--acc-mid);
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Screens */
+  .screen { display: none; }
+  .screen.active {
+    display: block;
+    animation: slideIn 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Typography */
+  .q-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .q-title {
+    font-family: 'Lora', serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .q-sub {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-block;
+    padding: 13px 32px;
+    background: var(--acc-dark);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 2rem;
+  }
+  .btn-primary:hover { background: var(--acc-mid); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled {
+    background: var(--border-mid);
+    color: var(--text-muted);
+    cursor: default;
+    transform: none;
+  }
+
+  /* Q1 — Palette */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 1rem;
+  }
+  .palette-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    background: var(--surface);
+  }
+  .palette-card:hover {
+    border-color: var(--acc-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  }
+  .palette-card.selected {
+    border-color: var(--acc-dark);
+    border-width: 2px;
+    box-shadow: 0 0 0 3px rgba(45,80,22,0.1);
+  }
+  .swatch-row {
+    display: flex;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .swatch { flex: 1; }
+  .palette-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .palette-range {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Q2 — Phrases */
+  .phrase-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .phrase-chip {
+    padding: 9px 18px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border-mid);
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text);
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    user-select: none;
+  }
+  .phrase-chip:hover { border-color: var(--acc-mid); background: var(--acc-pale); }
+  .phrase-chip.chosen {
+    background: var(--acc-dark);
+    color: #fff;
+    border-color: var(--acc-dark);
+  }
+  .phrase-chip.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .chosen-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .chosen-count strong { color: var(--acc-dark); }
+  .web-wrap {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .web-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 10px 14px 0;
+    font-style: italic;
+  }
+  #web-canvas { display: block; width: 100%; height: 200px; }
+
+  /* Q3 — Rank */
+  .rank-list {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: var(--surface);
+  }
+  .rank-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.15s;
+  }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 1px;
+    background: #F0F0EA;
+    color: var(--text-muted);
+    transition: all 0.3s;
+  }
+  .rank-item.top-pick .rank-num { background: var(--acc-dark); color: #fff; }
+  .rank-label { flex: 1; font-size: 14px; line-height: 1.5; color: var(--text); padding-top: 4px; }
+  .rank-custom {
+    flex: 1;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    border-bottom: 1px dashed var(--border-mid);
+    padding: 4px 0 3px;
+    outline: none;
+    width: 100%;
+  }
+  .rank-custom:focus { border-bottom-color: var(--acc-mid); }
+  .rank-custom::placeholder { color: var(--text-muted); font-style: italic; }
+  .rank-btns { display: flex; gap: 4px; flex-shrink: 0; padding-top: 2px; }
+  .rank-btn {
+    width: 30px;
+    height: 30px;
+    border: 0.5px solid var(--border-mid);
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .rank-btn:hover { background: var(--acc-pale); color: var(--acc-dark); }
+  .rank-btn:disabled { opacity: 0.2; cursor: default; }
+
+  /* Q4 — Follow-up */
+  .top-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .top-badge {
+    padding: 7px 16px;
+    border-radius: 100px;
+    background: var(--acc-dark);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .follow-block {
+    border-left: 3px solid var(--acc-light);
+    padding-left: 18px;
+    margin-bottom: 1.75rem;
+  }
+  .follow-q {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .follow-q em { color: var(--acc-mid); font-style: italic; font-family: 'Lora', serif; }
+  textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-mid);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--text);
+    resize: vertical;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { outline: none; border-color: var(--acc-mid); }
+  .or-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 1.25rem 0;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .or-line::before, .or-line::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+  .voice-nudge {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 0.5px solid var(--border);
+    background: var(--surface);
+    line-height: 1.6;
+  }
+
+  /* Q5 — Sliders */
+  .slider-block { margin-bottom: 2.5rem; }
+  .slider-q {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .slider-poles {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--acc-mid);
+    cursor: pointer;
+  }
+  .slider-readout {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    min-height: 20px;
+    font-style: italic;
+  }
+
+  /* Q6 — Spiral */
+  .spiral-outer { display: flex; gap: 20px; align-items: flex-start; }
+  .spiral-svg-wrap { flex-shrink: 0; width: 160px; }
+  .spiral-layers { flex: 1; min-width: 0; }
+  .spiral-layer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 9px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border-left: 4px solid;
+    background: var(--surface);
+    border-top: 0.5px solid var(--border);
+    border-right: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .layer-inner { flex: 1; min-width: 0; }
+  .layer-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .layer-input {
+    font-size: 15px;
+    border: 1.5px solid var(--border-mid);
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    outline: none;
+    border-radius: 6px;
+    padding: 10px 12px;
+    line-height: 1.6;
+    min-height: 56px;
+    resize: vertical;
+    display: block;
+    margin-top: 6px;
+  }
+  .layer-input:focus { border-color: var(--acc-mid); box-shadow: 0 0 0 3px rgba(74,124,47,0.15); }
+  .layer-input::placeholder { color: var(--text-muted); font-style: italic; }
+  .add-layer-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1.5px dashed var(--border-mid);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 6px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .add-layer-btn:hover { border-color: var(--acc-mid); color: var(--acc-mid); }
+  .new-layer-row { display: none; gap: 8px; margin-top: 8px; }
+  .new-layer-row.visible { display: flex; }
+  .new-layer-row input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--border-mid);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .new-layer-row input:focus { outline: none; border-color: var(--acc-mid); }
+  .new-layer-add {
+    padding: 9px 16px;
+    background: var(--acc-dark);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* Q7 — Voice/text */
+  .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  .mode-card {
+    padding: 20px 16px;
+    border: 1.5px solid var(--border-mid);
+    border-radius: 12px;
+    background: var(--surface);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .mode-card:hover { border-color: var(--acc-mid); transform: translateY(-1px); }
+  .mode-card.selected { border-color: var(--acc-dark); border-width: 2px; background: #F6FAF2; }
+  .mode-icon { font-size: 28px; margin-bottom: 8px; }
+  .mode-title { font-size: 15px; font-weight: 500; color: var(--text); }
+  .mode-desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .voice-box {
+    display: none;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    background: var(--surface);
+    margin-bottom: 1rem;
+  }
+  .voice-box.visible { display: flex; }
+  .rec-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: #8B2500;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .rec-btn.recording { animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139,37,0,0.3); } 50% { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(139,37,0,0); } }
+  .rec-status { font-size: 14px; color: var(--text-muted); margin-bottom: 4px; }
+  .rec-timer { font-size: 22px; font-weight: 300; color: var(--text); font-variant-numeric: tabular-nums; letter-spacing: 0.05em; }
+  .text-area-wrap { display: none; }
+  .text-area-wrap.visible { display: block; }
+
+  /* Q8 — Check-in */
+  .checkin-summary {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+    background: var(--surface);
+  }
+  .checkin-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .checkin-row:last-child { border-bottom: none; }
+  .ck-key {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 11px 14px;
+    min-width: 130px;
+    background: #F5F5F0;
+    border-right: 0.5px solid var(--border);
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .ck-val {
+    font-size: 13px;
+    color: var(--text);
+    padding: 11px 14px;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .accuracy-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .acc-btn {
+    padding: 10px 22px;
+    border: 1.5px solid var(--border-mid);
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .acc-btn:hover { border-color: var(--acc-mid); background: var(--acc-pale); }
+  .acc-btn.selected { background: var(--acc-dark); color: #fff; border-color: var(--acc-dark); }
+  .add-more { display: none; }
+  .add-more.visible { display: block; }
+
+  /* Submission states */
+  .submit-area { margin-top: 2rem; }
+  .submit-status {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    min-height: 22px;
+    font-style: italic;
+  }
+  .submit-status.error { color: #8B2500; font-style: normal; }
+  .submit-status.success { color: var(--acc-dark); font-style: normal; }
+
+  /* Closing */
+  .closing-wrap { text-align: center; padding: 3rem 0 2rem; }
+  .closing-leaf {
+    font-size: 52px;
+    margin-bottom: 1.5rem;
+    display: block;
+    animation: sway 3s ease-in-out infinite;
+  }
+  @keyframes sway { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  .closing-title {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .closing-msg {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.75;
+    max-width: 460px;
+    margin: 0 auto 2rem;
+  }
+  .data-note {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    background: var(--surface);
+    text-align: left;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  .data-note strong { color: var(--text-mid); }
+
+  @media (max-width: 520px) {
+    .palette-grid { grid-template-columns: 1fr; }
+    .spiral-outer { flex-direction: column; }
+    .spiral-svg-wrap { width: 100%; text-align: center; }
+    .spiral-svg-wrap svg { width: 160px; }
+    .mode-grid { grid-template-columns: 1fr; }
+    .q-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="site-logo">CEC Tri-National EE Framework</div>
+    <div class="site-lang">EN · ES · FR</div>
+  </div>
+</header>
+
+<main class="page-wrap">
+
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+    <div class="progress-label" id="progress-label">Welcome</div>
+  </div>
+
+  <!-- S0: Welcome -->
+  <div class="screen active" id="s0">
+    <p class="q-eyebrow">Community feedback · Version 1.0 draft</p>
+    <h1 class="q-title">Your knowledge shapes this framework.</h1>
+    <p class="q-sub">This isn't a survey about a finished document. It's a living conversation — your perspectives, your language, your ways of knowing are what this framework needs to become whole.</p>
+    <p class="q-sub" style="margin-bottom:0">There are 8 short questions. Some have a voice option if you'd rather speak than write. Take as much or as little time as you need.</p>
+    <button class="btn-primary" onclick="goTo(1)">Begin ›</button>
+  </div>
+
+  <!-- S1: Palette -->
+  <div class="screen" id="s1">
+    <p class="q-eyebrow">Question 1 of 8</p>
+    <h2 class="q-title">Which colours feel right for a framework rooted in this land?</h2>
+    <p class="q-sub">Each palette is named for a species that travels across all three countries. Pick the one that speaks to you — it will carry through the rest of this survey.</p>
+    <div class="palette-grid" id="palette-grid">
+      <div class="palette-card" onclick="choosePalette('monarch')" data-palette="monarch">
+        <div class="swatch-row">
+          <div class="swatch" style="background:#7A3200"></div>
+          <div class="swatch" style="background:#C45A00"></div>
+          <div class="swatch" style="background:#E8820A"></div>
+          <div class="swatch" style="background:#F5B942"></div>
+          <div class="swatch" style="background:#FEF0D0"></div>
+        </div>
+        <div class="palette-name">Monarch Butterfly</div>
+        <div class="palette-range">Migrates Canada → Mexico each year</div>
+      </div>
+      <div class="palette-card" onclick="choosePalette('hummingbird')" data-palette="hummingbird">
+        <div class="swatch-row">
+          <div class="swatch" style="background:#0D4A2A"></div>
+          <div class="swatch" style="background:#1A7A4A"></div>
+          <div class="swatch" style="background:#30A86A"></div>
+          <div class="swatch" style="background:#6DC99A"></div>
+          <div class="swatch" style="background:#D4F5E5"></div>
+        </div>
+        <div class="palette-name">Ruby-throated Hummingbird</div>
+        <div class="palette-range">Winters in Mexico, summers across North America</div>
+      </div>
+      <div class="palette-card" onclick="choosePalette('sandhill')" data-palette="sandhill">
+        <div class="swatch-row">
+          <div class="swatch" style="background:#3A2A1A"></div>
+          <div class="swatch" style="background:#6B4A2A"></div>
+          <div class="swatch" style="background:#A07A50"></div>
+          <div class="swatch" style="background:#C8A880"></div>
+          <div class="swatch" style="background:#F5EBD8"></div>
+        </div>
+        <div class="palette-name">Sandhill Crane</div>
+        <div class="palette-range">Flyway spans all three countries</div>
+      </div>
+      <div class="palette-card" onclick="choosePalette('whale')" data-palette="whale">
+        <div class="swatch-row">
+          <div class="swatch" style="background:#0A1A3A"></div>
+          <div class="swatch" style="background:#0F3A7A"></div>
+          <div class="swatch" style="background:#1A6BAA"></div>
+          <div class="swatch" style="background:#4A9ED4"></div>
+          <div class="swatch" style="background:#D4E8F8"></div>
+        </div>
+        <div class="palette-name">Gray Whale</div>
+        <div class="palette-range">Pacific coast from Alaska to Baja California</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn1" onclick="goTo(2)" disabled>Continue ›</button>
+  </div>
+
+  <!-- S2: Phrases -->
+  <div class="screen" id="s2">
+    <p class="q-eyebrow">Question 2 of 8</p>
+    <h2 class="q-title">What should a strong environmental education framework feel like?</h2>
+    <p class="q-sub">Choose 3–5 phrases that feel most true. Watch them gather.</p>
+    <p class="chosen-count"><strong id="chosen-num">0</strong> of 5 chosen</p>
+    <div class="phrase-pool" id="phrase-pool">
+      <div class="phrase-chip" onclick="togglePhrase(this,'Land-based')">Land-based</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Youth-led')">Youth-led</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Rooted in story')">Rooted in story</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Intergenerational')">Intergenerational</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Community-accountable')">Community-accountable</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Relational')">Relational</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Action-oriented')">Action-oriented</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Joyful')">Joyful</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Culturally safe')">Culturally safe</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Place-specific')">Place-specific</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Brave')">Brave</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Trauma-informed')">Trauma-informed</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Grounded in TEK/IK')">Grounded in TEK/IK</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Flexible')">Flexible</div>
+      <div class="phrase-chip" onclick="togglePhrase(this,'Hopeful')">Hopeful</div>
+    </div>
+    <div class="web-wrap">
+      <div class="web-label">Your framework is...</div>
+      <canvas id="web-canvas"></canvas>
+    </div>
+    <button class="btn-primary" id="btn2" onclick="goTo(3)" disabled>Continue ›</button>
+  </div>
+
+  <!-- S3: Rank -->
+  <div class="screen" id="s3">
+    <p class="q-eyebrow">Question 3 of 8</p>
+    <h2 class="q-title">What should this framework prioritise most?</h2>
+    <p class="q-sub">Use the arrows to reorder. Your top two choices will shape the next question. The last two rows are blank — add anything missing for you.</p>
+    <div class="rank-list" id="rank-list"></div>
+    <button class="btn-primary" onclick="goTo(4)">Continue ›</button>
+  </div>
+
+  <!-- S4: Follow-up -->
+  <div class="screen" id="s4">
+    <p class="q-eyebrow">Question 4 of 8 — going deeper</p>
+    <h2 class="q-title">You placed these at the top.</h2>
+    <div class="top-badges" id="top-badges"></div>
+    <p class="q-sub">What would it take for this framework to genuinely serve those priorities?</p>
+    <div id="follow-ups"></div>
+    <div class="or-line">or speak it</div>
+    <div class="voice-nudge">🎙 Prefer to answer by voice? There's a voice option at question 7 where you can speak to both of these.</div>
+    <button class="btn-primary" onclick="goTo(5)">Continue ›</button>
+  </div>
+
+  <!-- S5: Sliders -->
+  <div class="screen" id="s5">
+    <p class="q-eyebrow">Question 5 of 8</p>
+    <h2 class="q-title">How does this framework feel to you — right now?</h2>
+    <p class="q-sub">Move each slider honestly. You're responding to the framework as you understand it, not as it should be.</p>
+
+    <div class="slider-block">
+      <div class="slider-q">"This framework feels like..."</div>
+      <div class="slider-poles"><span>Not the land at all</span><span>The land</span></div>
+      <input type="range" min="0" max="100" step="1" value="50" id="sl1" oninput="updateSlider(this,'slv1','Not the land at all','The land')">
+      <div class="slider-readout" id="slv1"></div>
+    </div>
+
+    <div class="slider-block">
+      <div class="slider-q">"This framework feels like..."</div>
+      <div class="slider-poles"><span>Made for someone else</span><span>Made for us</span></div>
+      <input type="range" min="0" max="100" step="1" value="50" id="sl2" oninput="updateSlider(this,'slv2','Made for someone else','Made for us')">
+      <div class="slider-readout" id="slv2"></div>
+    </div>
+
+    <div class="slider-block">
+      <div class="slider-q">"This framework feels like..."</div>
+      <div class="slider-poles"><span>No real agency for communities</span><span>Real agency for communities</span></div>
+      <input type="range" min="0" max="100" step="1" value="50" id="sl3" oninput="updateSlider(this,'slv3','No real agency','Real agency')">
+      <div class="slider-readout" id="slv3"></div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo(6)">Continue ›</button>
+  </div>
+
+  <!-- S6: Spiral -->
+  <div class="screen" id="s6">
+    <p class="q-eyebrow">Question 6 of 8</p>
+    <h2 class="q-title">What's alive here — and what's missing?</h2>
+    <p class="q-sub">This spiral draws on the Cree interconnected worldview (LaBoucane-Benson et al., 2012). For each layer, share anything that feels important, missing, or needing more care. You can also add a layer that belongs here but isn't shown.</p>
+    <div class="spiral-outer">
+      <div class="spiral-svg-wrap">
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M 30 220 Q 10 190 40 170 Q 80 145 130 155 Q 175 162 185 185 Q 195 208 170 220 Q 140 232 100 228 Q 55 222 35 200 Q 15 178 35 158 Q 60 130 110 135 Q 160 138 178 160 Q 196 183 175 200" fill="none" stroke="#6B3D7A" stroke-width="10" stroke-linecap="round" opacity="0.85"/>
+          <path d="M 40 190 Q 20 165 50 148 Q 85 128 135 136 Q 175 142 185 162 Q 195 182 168 194 Q 138 206 95 202 Q 52 196 38 175 Q 20 152 42 136 Q 68 110 118 116 Q 165 120 180 140" fill="none" stroke="#1A3D8C" stroke-width="9" stroke-linecap="round" opacity="0.85"/>
+          <path d="M 48 162 Q 28 140 55 124 Q 88 104 138 110 Q 175 116 182 136 Q 190 156 162 168 Q 132 180 90 175 Q 50 170 40 150 Q 24 128 48 114 Q 74 90 124 96" fill="none" stroke="#1A6B8C" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+          <path d="M 55 134 Q 36 114 62 98 Q 94 80 142 86 Q 176 90 181 110 Q 186 130 158 142 Q 128 154 86 148 Q 46 142 40 122 Q 26 100 55 88" fill="none" stroke="#2D8B4E" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+          <path d="M 62 106 Q 44 88 70 74 Q 100 58 146 62 Q 176 66 180 86 Q 184 106 154 116 Q 124 126 82 120 Q 44 114 42 94 Q 30 74 62 64" fill="none" stroke="#7BA05B" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+          <path d="M 70 78 Q 54 62 80 50 Q 108 36 150 40 Q 176 44 178 62 Q 180 80 150 90 Q 120 100 78 92 Q 42 84 44 64" fill="none" stroke="#C45A00" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+          <path d="M 80 52 Q 66 38 90 28 Q 116 16 154 18 Q 175 22 175 40 Q 175 58 144 66 Q 114 74 76 64" fill="none" stroke="#8B0000" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="spiral-layers" id="spiral-layers">
+        <div class="spiral-layer" style="border-left-color:#6B3D7A"><div class="layer-inner"><div class="layer-name">Cosmos / Spirit World</div><label for="sp-cosmos" style="font-size:13px;color:var(--text-muted);display:block;margin-top:4px;">What's missing or needs more care at this level?</label><textarea class="layer-input" id="sp-cosmos" placeholder="Type your thoughts here..."></textarea></div></div>
+        <div class="spiral-layer" style="border-left-color:#1A3D8C"><div class="layer-inner"><div class="layer-name">Natural Environment</div><label for="sp-nature" style="font-size:13px;color:var(--text-muted);display:block;margin-top:4px;">What's missing or needs more care at this level?</label><textarea class="layer-input" id="sp-nature" placeholder="Type your thoughts here..."></textarea></div></div>
+        <div class="spiral-layer" style="border-left-color:#1A6B8C"><div class="layer-inner"><div class="layer-name">Nation</div><label for="sp-nation" style="font-size:13px;color:var(--text-muted);display:block;margin-top:4px;">What's missing or needs more care at this level?</label><textarea class="layer-input" id="sp-nation" placeholder="Type your thoughts here..."></textarea></div></div>
+        <div class="spiral-layer" style="border-left-color:#2D8B4E"><div class="layer-inner"><div class="layer-name">Community</div><label for="sp-community" style="font-size:13px;color:var(--text-muted);display:block;margin-top:4px;">What's missing or needs more care at this level?</label><textarea class="layer-input" id="sp-community" placeholder="Type your thoughts here..."></textarea></div></div>
+        <div class="spiral-layer" style="border-left-color:#7BA05B"><div class="layer-inner"><div class="layer-name">Family</div><label for="sp-family" style="font-size:13px;color:var(--text-muted);display:block;margin-top:4px;">What's missing or needs more care at this level?</label><textarea class="layer-input" id="sp-family" placeholder="Type your thoughts here..."></textarea></div></div>
+        <div class="spiral-layer" style="border-left-color:#C45A00"><div class="layer-inner"><div class="layer-name">Individual</div><label for="sp-individual" style="font-size:13px;color:var(--text-muted);display:block;margin-top:4px;">What's missing or needs more care at this level?</label><textarea class="layer-input" id="sp-individual" placeholder="Type your thoughts here..."></textarea></div></div>
+        <div class="new-layer-row" id="new-layer-row">
+          <input id="new-layer-name" placeholder="Name a new layer..."/>
+          <button class="new-layer-add" onclick="addLayer()">Add</button>
+        </div>
+        <button class="add-layer-btn" onclick="showNewLayer()" id="add-layer-btn">+ Add a missing layer</button>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="goTo(7)">Continue ›</button>
+  </div>
+
+  <!-- S7: Voice/text -->
+  <div class="screen" id="s7">
+    <p class="q-eyebrow">Question 7 of 8</p>
+    <h2 class="q-title">One last thing — for the young people.</h2>
+    <p class="q-sub">Imagine a young person in your community five years from now who experienced education shaped by this framework. In a sentence or two: what would you want them to be able to say?</p>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="setMode('voice')" id="mode-voice">
+        <div class="mode-icon">🎙</div>
+        <div class="mode-title">Speak it</div>
+        <div class="mode-desc">Record a voice note</div>
+      </div>
+      <div class="mode-card" onclick="setMode('text')" id="mode-text">
+        <div class="mode-icon">✏️</div>
+        <div class="mode-title">Write it</div>
+        <div class="mode-desc">Type your response</div>
+      </div>
+    </div>
+    <div class="voice-box" id="voice-box">
+      <button class="rec-btn" id="rec-btn" onclick="toggleRec()">🎙</button>
+      <div>
+        <div class="rec-status" id="rec-status">Press to start recording</div>
+        <div class="rec-timer" id="rec-timer">0:00</div>
+      </div>
+    </div>
+    <div class="text-area-wrap" id="text-area-wrap">
+      <textarea id="final-text" placeholder="Write what comes to you..."></textarea>
+    </div>
+    <button class="btn-primary" onclick="goTo(8)">Continue ›</button>
+  </div>
+
+  <!-- S8: Check-in -->
+  <div class="screen" id="s8">
+    <p class="q-eyebrow">Question 8 of 8</p>
+    <h2 class="q-title">So far, the framework you want looks like this.</h2>
+    <p class="q-sub">We've reflected back what you shared. Does this feel right?</p>
+    <div class="checkin-summary" id="checkin-summary"></div>
+    <div class="accuracy-row">
+      <button class="acc-btn" onclick="setAccuracy('yes')" id="acc-yes">Yes, that's it</button>
+      <button class="acc-btn" onclick="setAccuracy('mostly')" id="acc-mostly">Mostly — small thing to add</button>
+      <button class="acc-btn" onclick="setAccuracy('no')" id="acc-no">Not quite</button>
+    </div>
+    <div class="add-more" id="add-more">
+      <textarea id="correction-text" placeholder="What would you add or change about how we've reflected you back?"></textarea>
+    </div>
+    <div class="submit-area">
+      <button class="btn-primary" id="btn-submit" onclick="submitSurvey()" disabled>Submit ›</button>
+      <div class="submit-status" id="submit-status"></div>
+    </div>
+  </div>
+
+  <!-- S9: Thank you -->
+  <div class="screen" id="s9">
+    <div class="closing-wrap">
+      <span class="closing-leaf">🌿</span>
+      <h2 class="closing-title">Miigwech. Gracias. Thank you.</h2>
+      <p class="closing-msg">Your perspective has been received and will be woven into the framework alongside voices from communities across Canada, the United States, and Mexico.</p>
+      <div class="data-note">
+        <strong>About your data:</strong> This project is being co-developed in alignment with OCAP® principles. Your responses are stored on York University's Microsoft infrastructure (Canadian data residency) and will not be processed by any AI system. They will be read directly by the research team.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ── Configuration ──────────────────────────────────────────────
+const FLOW_URL = 'https://script.google.com/macros/s/AKfycbwHOoMm0f3m0PScOvCRhGyVBaBUPxRMh_v60yQJLmNuhErqSdVJAwh_MJ-XMFRp-OZgrQ/exec';
+
+// ── State ───────────────────────────────────────────────────────
+const PALETTES = {
+  monarch:     {dark:'#7A3200',mid:'#C45A00',light:'#E8820A',pale:'#FEF0D0'},
+  hummingbird: {dark:'#0D4A2A',mid:'#1A7A4A',light:'#30A86A',pale:'#D4F5E5'},
+  sandhill:    {dark:'#3A2A1A',mid:'#6B4A2A',light:'#A07A50',pale:'#F5EBD8'},
+  whale:       {dark:'#0A1A3A',mid:'#0F3A7A',light:'#1A6BAA',pale:'#D4E8F8'}
+};
+let chosenPalette = null;
+let chosenPhrases = [];
+let rankItems = [
+  {id:'r1', text:'Recognizing and including Indigenous and Traditional Ecological Knowledge', custom:false},
+  {id:'r2', text:'Meaningful youth leadership and agency', custom:false},
+  {id:'r3', text:'Intergenerational dialogue and learning', custom:false},
+  {id:'r4', text:'Community-led, place-based approaches', custom:false},
+  {id:'r5', text:'Practical tools communities can actually use', custom:false},
+  {id:'r6', text:'Tri-national collaboration and exchange', custom:false},
+  {id:'r7', text:'', custom:true},
+  {id:'r8', text:'', custom:true}
+];
+let sliders = {sl1:50, sl2:50, sl3:50};
+let accuracyChoice = null;
+let addedLayers = [];
+let isRecording = false, recInterval = null, recSeconds = 0, mediaRecorder = null;
+let currentScreen = 0;
+
+// ── Navigation ──────────────────────────────────────────────────
+const SCREEN_LABELS = ['Welcome','Palette','Values','Priorities','Going deeper','How it feels','The spiral','For young people','Check-in','Done'];
+function goTo(n) {
+  document.getElementById('s'+currentScreen).classList.remove('active');
+  currentScreen = n;
+  document.getElementById('s'+n).classList.add('active');
+  const pct = Math.round((n/9)*100);
+  document.getElementById('progress').style.width = pct+'%';
+  document.getElementById('progress-label').textContent = (SCREEN_LABELS[n]||'') + (n>0&&n<9 ? ' · Question '+n+' of 8' : '');
+  if(n===3) renderRankList();
+  if(n===4) renderFollowUps();
+  if(n===8) renderCheckin();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── Q1: Palette ─────────────────────────────────────────────────
+function choosePalette(name) {
+  chosenPalette = name;
+  const p = PALETTES[name];
+  document.documentElement.style.setProperty('--acc-dark', p.dark);
+  document.documentElement.style.setProperty('--acc-mid', p.mid);
+  document.documentElement.style.setProperty('--acc-light', p.light);
+  document.documentElement.style.setProperty('--acc-pale', p.pale);
+  document.documentElement.style.setProperty('--bg', p.pale);
+  document.querySelectorAll('.palette-card').forEach(c => c.classList.toggle('selected', c.dataset.palette===name));
+  document.getElementById('btn1').disabled = false;
+}
+
+// ── Q2: Phrases ─────────────────────────────────────────────────
+function togglePhrase(el, txt) {
+  if(el.classList.contains('chosen')) {
+    el.classList.remove('chosen');
+    chosenPhrases = chosenPhrases.filter(p => p!==txt);
+  } else {
+    if(chosenPhrases.length >= 5) return;
+    el.classList.add('chosen');
+    chosenPhrases.push(txt);
+  }
+  document.querySelectorAll('.phrase-chip').forEach(c => {
+    c.classList.toggle('disabled', chosenPhrases.length>=5 && !c.classList.contains('chosen'));
+  });
+  document.getElementById('chosen-num').textContent = chosenPhrases.length;
+  document.getElementById('btn2').disabled = chosenPhrases.length < 3;
+  drawWeb();
+}
+
+function drawWeb() {
+  const canvas = document.getElementById('web-canvas');
+  const W = canvas.offsetWidth||500, H = 200;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  if(!chosenPhrases.length) return;
+  const p = chosenPalette ? PALETTES[chosenPalette] : PALETTES.hummingbird;
+  const cx=W/2, cy=H/2+10, r=Math.min(W,H)*0.34, n=chosenPhrases.length;
+  ctx.font = '400 13px DM Sans, sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(a)*r, cy+Math.sin(a)*r);
+    ctx.strokeStyle=p.light+'88'; ctx.lineWidth=1.5; ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.fillStyle=p.dark; ctx.fill();
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r;
+    ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fillStyle=p.mid; ctx.fill();
+    ctx.fillStyle=p.dark;
+    ctx.fillText(chosenPhrases[i], x, y-16);
+  }
+}
+
+// ── Q3: Rank ────────────────────────────────────────────────────
+function renderRankList() {
+  const el = document.getElementById('rank-list');
+  el.innerHTML = '';
+  rankItems.forEach((item,i) => {
+    const div = document.createElement('div');
+    div.className = 'rank-item'+(i<2?' top-pick':'');
+    const labelHTML = item.custom
+      ? `<input class="rank-custom" placeholder="Add your own priority..." value="${item.text}" oninput="rankItems[${i}].text=this.value">`
+      : `<div class="rank-label">${item.text}</div>`;
+    div.innerHTML = `
+      <div class="rank-num">${i+1}</div>
+      ${labelHTML}
+      <div class="rank-btns">
+        <button class="rank-btn" onclick="moveRank(${i},-1)" ${i===0?'disabled':''} aria-label="Move up">▲</button>
+        <button class="rank-btn" onclick="moveRank(${i},1)" ${i===rankItems.length-1?'disabled':''} aria-label="Move down">▼</button>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+function moveRank(idx,dir) {
+  const ni=idx+dir;
+  if(ni<0||ni>=rankItems.length) return;
+  [rankItems[idx],rankItems[ni]]=[rankItems[ni],rankItems[idx]];
+  renderRankList();
+}
+
+// ── Q4: Follow-ups ──────────────────────────────────────────────
+function renderFollowUps() {
+  const top2 = rankItems.filter(r=>r.text.trim()).slice(0,2);
+  document.getElementById('top-badges').innerHTML = top2.map(t=>`<div class="top-badge">${t.text}</div>`).join('');
+  document.getElementById('follow-ups').innerHTML = top2.map((t,i)=>`
+    <div class="follow-block">
+      <div class="follow-q">What would it take for this framework to genuinely serve <em>${t.text.toLowerCase()}</em>?</div>
+      <textarea id="fu${i}" placeholder="Take your time..."></textarea>
+    </div>`).join('');
+}
+
+// ── Q5: Sliders ─────────────────────────────────────────────────
+function updateSlider(input, outId, left, right) {
+  sliders[input.id] = parseInt(input.value);
+  const v=parseInt(input.value), el=document.getElementById(outId);
+  if(v===50){el.textContent='';return;}
+  el.textContent = v<50 ? `Leaning toward: ${left} (${50-v}%)` : `Leaning toward: ${right} (${v-50}%)`;
+}
+
+// ── Q6: Spiral ──────────────────────────────────────────────────
+function showNewLayer() {
+  document.getElementById('new-layer-row').classList.add('visible');
+  document.getElementById('add-layer-btn').style.display='none';
+  document.getElementById('new-layer-name').focus();
+}
+function addLayer() {
+  const inp=document.getElementById('new-layer-name');
+  const name=inp.value.trim(); if(!name) return;
+  const cols=['#8B0000','#C45A00','#0D4A2A','#0A1A3A','#6B3D7A'];
+  const col=cols[addedLayers.length % cols.length];
+  addedLayers.push({name, notes:''});
+  const idx=addedLayers.length-1;
+  const layers=document.getElementById('spiral-layers');
+  const d=document.createElement('div');
+  d.className='spiral-layer'; d.style.borderLeftColor=col;
+  d.innerHTML=`<div class="layer-inner"><div class="layer-name">${name} <span style="font-size:11px;opacity:0.6">(added)</span></div><input class="layer-input" placeholder="What's important here?" oninput="addedLayers[${idx}].notes=this.value"/></div>`;
+  layers.insertBefore(d, document.getElementById('add-layer-btn'));
+  document.getElementById('new-layer-row').classList.remove('visible');
+  document.getElementById('add-layer-btn').style.display='flex';
+  inp.value='';
+}
+
+// ── Q7: Voice/text ──────────────────────────────────────────────
+function setMode(mode) {
+  document.getElementById('mode-voice').classList.toggle('selected', mode==='voice');
+  document.getElementById('mode-text').classList.toggle('selected', mode==='text');
+  document.getElementById('voice-box').classList.toggle('visible', mode==='voice');
+  document.getElementById('text-area-wrap').classList.toggle('visible', mode==='text');
+}
+function toggleRec() {
+  if(!isRecording) {
+    navigator.mediaDevices.getUserMedia({audio:true}).then(stream => {
+      mediaRecorder=new MediaRecorder(stream);
+      mediaRecorder.start();
+      isRecording=true; recSeconds=0;
+      document.getElementById('rec-btn').classList.add('recording');
+      document.getElementById('rec-btn').textContent='⏹';
+      document.getElementById('rec-status').textContent='Recording...';
+      recInterval=setInterval(()=>{
+        recSeconds++;
+        const m=Math.floor(recSeconds/60), s=String(recSeconds%60).padStart(2,'0');
+        document.getElementById('rec-timer').textContent=m+':'+s;
+      },1000);
+    }).catch(()=>{
+      document.getElementById('rec-status').textContent='Microphone access needed — please try the text option.';
+    });
+  } else {
+    if(mediaRecorder){mediaRecorder.stop();mediaRecorder.stream.getTracks().forEach(t=>t.stop());}
+    isRecording=false; clearInterval(recInterval);
+    document.getElementById('rec-btn').classList.remove('recording');
+    document.getElementById('rec-btn').textContent='🎙';
+    document.getElementById('rec-status').textContent='Voice note recorded ✓ — tap to re-record';
+  }
+}
+
+// ── Q8: Check-in ────────────────────────────────────────────────
+function renderCheckin() {
+  const top2=rankItems.filter(r=>r.text.trim()).slice(0,2);
+  const slLabel=(id,left,right)=>{
+    const v=sliders[id];
+    if(v===50) return 'Neutral';
+    return v<50 ? `${left} (${50-v}%)` : `${right} (${v-50}%)`;
+  };
+  const palName = chosenPalette ? chosenPalette.charAt(0).toUpperCase()+chosenPalette.slice(1) : '—';
+  document.getElementById('checkin-summary').innerHTML = `
+    <div class="checkin-row"><div class="ck-key">Palette</div><div class="ck-val">${palName}</div></div>
+    <div class="checkin-row"><div class="ck-key">Feels like</div><div class="ck-val">${chosenPhrases.join(', ')||'—'}</div></div>
+    <div class="checkin-row"><div class="ck-key">Top priority</div><div class="ck-val">${top2.map(t=>t.text).join(' · ')||'—'}</div></div>
+    <div class="checkin-row"><div class="ck-key">The land</div><div class="ck-val">${slLabel('sl1','Not the land','The land')}</div></div>
+    <div class="checkin-row"><div class="ck-key">Made for us</div><div class="ck-val">${slLabel('sl2','Someone else','Us')}</div></div>
+    <div class="checkin-row"><div class="ck-key">Agency</div><div class="ck-val">${slLabel('sl3','No agency','Real agency')}</div></div>`;
+}
+function setAccuracy(val) {
+  accuracyChoice=val;
+  ['yes','mostly','no'].forEach(v=>document.getElementById('acc-'+v).classList.toggle('selected',v===val));
+  document.getElementById('add-more').classList.toggle('visible', val==='mostly'||val==='no');
+  document.getElementById('btn-submit').disabled=false;
+}
+
+// ── Submission ──────────────────────────────────────────────────
+async function submitSurvey() {
+  const btn=document.getElementById('btn-submit');
+  const status=document.getElementById('submit-status');
+  btn.disabled=true;
+  status.textContent='Sending your response...';
+  status.className='submit-status';
+
+  const top2=rankItems.filter(r=>r.text.trim()).slice(0,2);
+  const fu0=document.getElementById('fu0');
+  const fu1=document.getElementById('fu1');
+
+  const spiralNotes = [
+    document.getElementById('sp-cosmos')?.value,
+    document.getElementById('sp-nature')?.value,
+    document.getElementById('sp-nation')?.value,
+    document.getElementById('sp-community')?.value,
+    document.getElementById('sp-family')?.value,
+    document.getElementById('sp-individual')?.value,
+    ...addedLayers.map(l=>`[${l.name}]: ${l.notes}`)
+  ].filter(Boolean).join(' | ');
+
+  const payload = {
+    response_id: 'resp_' + Date.now(),
+    submitted_at: new Date().toISOString(),
+    palette: chosenPalette||'',
+    phrases: chosenPhrases.join(', '),
+    priority_1: top2[0]?.text||'',
+    priority_2: top2[1]?.text||'',
+    followup_1: fu0?.value||'',
+    followup_2: fu1?.value||'',
+    slider_land: String(sliders.sl1),
+    slider_made_for_us: String(sliders.sl2),
+    slider_agency: String(sliders.sl3),
+    spiral_notes: spiralNotes,
+    for_young_people: document.getElementById('final-text')?.value||'[voice note]',
+    audio_filename: isRecording ? '' : (recSeconds>0 ? 'resp_'+Date.now()+'_audio.webm' : ''),
+    checkin_accuracy: accuracyChoice||'',
+    checkin_correction: document.getElementById('correction-text')?.value||''
+  };
+
+  try {
+    await fetch(FLOW_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    status.textContent='Response sent successfully ✓';
+    status.className='submit-status success';
+    setTimeout(()=>goTo(9), 800);
+  } catch(err) {
+    status.textContent='Could not connect to the server. Please check your internet connection and try again. ('+err.message+')';
+    status.className='submit-status error';
+    btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
